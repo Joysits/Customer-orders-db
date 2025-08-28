@@ -20,3 +20,19 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+from django.contrib import admin
+from django.urls import path, include
+from orders import views
+from django.views.generic import TemplateView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/customers/', views.CustomerListCreateView.as_view(), name='customer-list'),
+    path('api/customers/<uuid:pk>/', views.CustomerDetailView.as_view(), name='customer-detail'),
+    path('api/orders/', views.OrderListCreateView.as_view(), name='order-list'),
+    path('api/orders/<uuid:pk>/', views.OrderDetailView.as_view(), name='order-detail'),
+    path('logout/', views.logout_view, name='logout'),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('oidc/', include('mozilla_django_oidc.urls')),
+]
